@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>🔮 Predicción de Bitcoin</title>
+    <link rel="stylesheet" href="{% static 'predictor/css/estilo.css' %}">
+</head>
+<body>
+    <div class="contenedor">
+        <h1>🔮 Predicción de Bitcoin con IA</h1>
+        <button id="btnPredecir">📊 Predecir próximo precio</button>
+        <div id="resultado" class="resultado"></div>
+    </div>
+
+    <script>
+    document.getElementById("btnPredecir").addEventListener("click", function() {
+        fetch("/predictor/predecir/")
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById("resultado").innerHTML = `<p style="color:red;">${data.error}</p>`;
+                } else {
+                    document.getElementById("resultado").innerHTML = `
+                        <p><strong>📍 Precio actual:</strong> $${data.precio_actual}</p>
+                        <p><strong>📈 Predicción para mañana:</strong> $${data.prediccion}</p>
+                        <p><strong>🔍 Diferencia:</strong> $${data.diferencia}</p>
+                        <p><strong>🔁 Tendencia esperada:</strong> ${data.tendencia}</p>
+                    `;
+                }
+            });
+    });
+    </script>
+</body>
+</html>

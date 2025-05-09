@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>📜 Historial de Predicciones</title>
+    <link rel="stylesheet" href="{% static 'predictor/css/estilo.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="contenedor">
+        <h1>📜 Historial de Predicciones</h1>
+
+        <!-- Formulario de fechas -->
+        <form method="get" style="margin-bottom: 20px;" class="form-fechas">
+            <label for="inicio"><i class="fa-solid fa-calendar-days"></i> Desde:</label>
+            <input type="date" name="inicio" id="inicio" value="{{ fecha_inicio }}">
+            
+            <label for="fin"><i class="fa-solid fa-calendar-days"></i> Hasta:</label>
+            <input type="date" name="fin" id="fin" value="{{ fecha_fin }}">
+            
+            <button type="submit">🔎 Filtrar</button>
+            <a href="{% url 'historial_predicciones' %}" class="btn-limpiar">🧹 Limpiar</a>
+        </form>
+
+        <!-- Tabla de resultados -->
+        <table class="tabla-historial">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Precio Actual</th>
+                    <th>Predicción</th>
+                    <th>Diferencia</th>
+                    <th>Tendencia</th>
+                    <th>Modelo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in predicciones %}
+                <tr>
+                    <td>{{ p.fecha|date:"Y-m-d H:i" }}</td>
+                    <td>${{ p.precio_actual }}</td>
+                    <td>${{ p.prediccion }}</td>
+                    <td>${{ p.diferencia }}</td>
+                    <td>{{ p.tendencia }}</td>
+                    <td>
+                        {% if p.modelo_usado == "modelo_online" %}
+                            🌐 Online
+                        {% elif p.modelo_usado == "modelo_csv" %}
+                            📁 Local
+                        {% else %}
+                            ⚠️ Desconocido
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="color: orange;">⚠️ No se encontraron predicciones en el rango seleccionado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div style="margin-top: 30px;">
+            <a href="{% url 'vista_prediccion' %}" class="btn-prediccion">📊 Volver a predecir</a>
+        </div>
+    </div>
+</body>
+</html>

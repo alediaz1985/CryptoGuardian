@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>🔮 Predicción de Bitcoin</title>
+    <link rel="stylesheet" href="{% static 'predictor/css/estilo.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="contenedor">
+        <h1>🔮 Predicción de Bitcoin con IA</h1>
+
+        <label for="modelo">Seleccionar modelo:</label>
+        <select id="modelo">
+            <option value="modelo_online">🌐 Datos Online</option>
+            <option value="modelo_csv">📁 CSV Local</option>
+        </select>
+
+        <button id="btnPredecir">📊 Predecir próximo precio</button>
+        <a href="{% url 'historial_predicciones' %}">
+            <button style="margin-left: 10px;">📜 Consultar historial</button>
+        </a>
+
+        <div id="loader" class="loader" style="display:none;"></div>
+        <div id="resultado" class="resultado"></div>
+        <canvas id="grafico" width="400" height="200"></canvas>
+    </div>
+
+    <script src="{% static 'predictor/js/prediccion.js' %}"></script>
+</body>
+</html>
